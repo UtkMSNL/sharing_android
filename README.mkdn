@@ -1,50 +1,60 @@
-CyanogenMod
-===========
+Generic and Adaptive Resource Sharing Framework
+==============================================
+This is the home of the repository for our resource sharing framework. These are the instructions for building and running the target work.
 
-Submitting Patches
-------------------
-Patches are always welcome!  Please submit your patches via CyanogenMod Gerrit!
-You can do this by using these commands:
+Instructions
+============
 
-    (From root android directory)
-    . build/envsetup.sh
-    (Go to repo you are patching, make your changes and commit)
-    cmgerrit <for(new)/changes(patch set)> <branch/change-id> 
+Initializing your build environment
+-----------------------------------
 
-    repo start cm-12.1 .
-    (Make your changes and commit)
-    repo upload .
-Note: "." meaning current directory
-For more help on using this tool, use this command: repo help upload
+Follow the directions listed on the [AOSP](http://source.android.com/source/initializing.html) website. Our work is currently based on version 4.1.x (Jellybean) of Android.
 
-Make your changes and commit with a detailed message, starting with what you are working with (i.e. vision: Update Kernel)
-Commit your patches in a single commit. Squash multiple commit using this command: git rebase -i HEAD~<# of commits>
+Downloading Source Code
+-----------------------
 
-To view the status of your and others' patches, visit [CyanogenMod Code Review](http://review.cyanogenmod.org/)
+Downloading the source code is almost the same as downloading the source code from the Android Open Source Project. Follow the directions on the [AOSP](http://source.android.com/source/downloading.html) page up to the "Getting the files" section. However use the below command to initialize your repository instead of the one listed in the link.
 
+    repo init -u https://github.com/UtkMSNL/sharing_android -b cm-12.1
 
-Getting Started
----------------
+Compiling for the first time
+----------------------------
 
-To get started with Android/CyanogenMod, you'll need to get
-familiar with [Git and Repo](http://source.android.com/source/using-repo.html).
+We have tested our work on Google Nexus 4 and Samsung Galaxy S4 i9500 model. A detailed build instructions can be found on [CyanogenMod build for Google Nexus 4](https://wiki.cyanogenmod.org/w/Build_for_mako) and [CyanogenMod build for Samsung Galaxy S4](https://wiki.cyanogenmod.org/w/Build_for_i9500). You can take time to learn and follow their steps.
 
-To initialize your local repository using the CyanogenMod trees, use a command like this:
+Setting up sharing configuration
+--------------------------------
 
-    repo init -u git://github.com/CyanogenMod/android.git -b cm-12.1
+Generally speaking, you don't need to do much work after building the source code and flashing the image to the phone. The only thing you need to do is to setup the configuration of sharing server and client. Each different sharing service shares some similarity in configuration, but a little variation also exists. Here is a list of supported sharing services and their configurations.
 
-Then to sync up:
+    Location & Notification sharing configuration. File path shall be: "/data/data/system_server/native.service.config.properties"
+    isServer = false                        # indicating this is a sharing server or client. true->server, false->client
+    serverPort = 58337                      # the network port to establish the RPC connection and method invocation. Any unused port works
+    serverIp = 10.129.156.225               # the network address of the sharing server. If this phone is a server, this value will be ignored
+    isLocationSharingEnabled = false        # switch of Location sharing
+    isNotificationSharingEnabled = false    # switch of Notification sharing
+    
+    Sensor sharing configuration. File path shall be: "/data/data/system_server/native.service.config.properties"
+    1               # switch to enable or disable the sensor sharing. 1->enable, 0->disable
+    0               # indicating this is a sharing server or client. 1->server, 0->client
+    10.128.0.119    # the network address of the sharing server. If this phone is a server, this value will be ignored
+    53377           # the network port to establish the RPC connection and method invocation. Any unused port works
+    53388           # sensor service will built a separate channel to deliver the sensor data. The network port to deliver sensor data
 
-    repo sync
-
-Please see the [CyanogenMod Wiki](http://wiki.cyanogenmod.org/) for building instructions.
-
-For more information on this Github Organization and how it is structured, 
-please [read the wiki article](http://wiki.cyanogenmod.org/w/Github_Organization)
-
-Buildbot
---------
-
-All supported devices are built nightly and periodically as changes are committed to ensure the source trees remain buildable.
-
-You can view the current build statuses at [CyanogenMod Jenkins](http://jenkins.cyanogenmod.org/)
+    Audio sharing configuration. File shall be: "/data/data/media_server/audio.service.config.properties"
+    1               # switch to enable or disable the audio sharing. 1->enable, 0->disable
+    0               # indicating this is a sharing server or client. 1->server, 0->client
+    10.128.0.119    # the network address of the sharing server. If this phone is a server, this value will be ignored
+    28346           # the network port to establish the RPC connection and method invocation. Any unused port works
+    App-specific Audio Sharing Configuration. File shall be: "/data/data/full_apk_name/buffer.servic
+e.config.properties". This app-specific audio configuration exists because the application needs to build a connection with the audio sharing server so that the application can share an audio buffer with the server and do buffer synchronization.
+    1               # switch to enable or disable the audio sharing for this application. 1->enable, 0->disable
+    0               # indicating this is a sharing server or client. 1->server, 0->client
+    10.128.0.119    # the network address of the sharing server. If this phone is a server, this value will be ignored
+    28346           # the network port for the application to build a connection with the server.
+    
+    Camera sharing configuration. File shall be: "/data/data/media_server/camera.service.config.properties"
+    1               # switch to enable or disable the audio sharing. 1->enable, 0->disable
+    0               # indicating this is a sharing server or client. 1->server, 0->client
+    10.128.0.119    # the network address of the sharing server. If this phone is a server, this value will be ignored
+    28350           # the network port to establish the RPC connection and method invocation. Any unused port works
