@@ -46,8 +46,7 @@ Generally speaking, you don't need to do much work after building the source cod
     0               # indicating this is a sharing server or client. 1->server, 0->client
     10.128.0.119    # the network address of the sharing server. If this phone is a server, this value will be ignored
     28346           # the network port to establish the RPC connection and method invocation. Any unused port works
-    App-specific Audio Sharing Configuration. File shall be: "/data/data/full_apk_name/buffer.servic
-e.config.properties". This app-specific audio configuration exists because the application needs to build a connection with the audio sharing server so that the application can share an audio buffer with the server and do buffer synchronization.
+    App-specific Audio Sharing Configuration. File shall be: "/data/data/full_apk_name/buffer.service.config.properties". This app-specific audio configuration exists because the application needs to build a connection with the audio sharing server so that the application can share an audio buffer with the server and do buffer synchronization.
     1               # switch to enable or disable the audio sharing for this application. 1->enable, 0->disable
     0               # indicating this is a sharing server or client. 1->server, 0->client
     10.128.0.119    # the network address of the sharing server. If this phone is a server, this value will be ignored
