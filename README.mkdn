@@ -27,7 +27,7 @@ Setting up sharing configuration
 
 Generally speaking, you don't need to do much work after building the source code and flashing the image to the phone. The only thing you need to do is to setup the configuration of sharing server and client. Each different sharing service shares some similarity in configuration, but a little variation also exists. Here is a list of supported sharing services and their configurations.
 
-    Location & Notification sharing configuration. File path shall be: "/data/data/system_server/native.service.config.properties"
+    Location & Notification sharing configuration. File path shall be: "/data/data/system_server/service.config.properties"
     isServer = false                        # indicating this is a sharing server or client. true->server, false->client
     serverPort = 58337                      # the network port to establish the RPC connection and method invocation. Any unused port works
     serverIp = 10.129.156.225               # the network address of the sharing server. If this phone is a server, this value will be ignored
